@@ -128,7 +128,7 @@ public class Calculator extends VBox implements EventHandler<ActionEvent>{
 			return number1;
 		} else {
 			number2 += value;
-			return number1 + operator + number2;
+			return number1 + number2;
 		}
 	}
 		
