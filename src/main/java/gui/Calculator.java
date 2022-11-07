@@ -123,13 +123,8 @@ public class Calculator extends VBox implements EventHandler<ActionEvent>{
 	}
 		
 	public String setValue(String value) {
-		if(operator == null) {
-			number1 += value;
-			return number1;
-		} else {
-			number2 += value;
-			return number1 + number2;
-		}
+		number1 += value;
+		return number1;
 	}
 		
 	public String doOperation(String operation) {
