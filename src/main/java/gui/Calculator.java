@@ -121,44 +121,42 @@ public class Calculator extends VBox implements EventHandler<ActionEvent>{
 		
 		this.getChildren().addAll(sp, gd);
 	}
-	
+		
 	public String setValue(String value) {
-		try{
-	        Integer.parseInt(value);
-	        if(number1.isEmpty()) { 
-	        	number1 = value; 
-	        	operator = " ";
-	        } else { 
-	        	number2 = value; 
-	        }
-	        
-	    } catch(NumberFormatException e){
-	    	operator = value;
-	    }
-		return number1 + operator + number2;
+		if(operator == null) {
+			number1 += value;
+			return number1;
+		} else {
+			number2 += value;
+			return number1 + operator + number2;
+		}
 	}
 		
-	public double doOperation(String operation) {
+	public String doOperation(String operation) {
+		for(char element: operation.toCharArray()) {
+			if(element == '+' || element == '-' || element == '/' || element == '*') {
+				number1 = operation.substring(0, operation.indexOf(element));
+				number2 = operation.substring(operation.indexOf(element) + 1, operation.length());
+				operator = Character.toString(element);
+			}
+		}
 		
-		try{
-			double number1 = (double) Character.getNumericValue(operation.charAt(0));
-			double number2 = (double) Character.getNumericValue(operation.charAt(2));
-	        
-			switch (operation.charAt(1)) {
-            case '*':
-                return number1 * number2;
-            case '/':
-                return number1 / number2;
-            case '+':
-                return number1 + number2;
-            case '-':
-                return number1 - number2;
-            default:
-                return 0; }   
-			
-	    } catch(StringIndexOutOfBoundsException e){
-	    	return 0;
-	    }
+		try {
+			switch (operator) {
+			case "+":
+				return Double.toString(Double.parseDouble(number1) + Double.parseDouble(number2));
+			case "-":
+				return Double.toString(Double.parseDouble(number1) - Double.parseDouble(number2));
+			case "*":
+				return Double.toString(Double.parseDouble(number1) * Double.parseDouble(number2));
+			case "/":
+				return Double.toString(Double.parseDouble(number1) / Double.parseDouble(number2));
+			default:
+				return "0.0";
+			}		
+		} catch(NumberFormatException e) {
+			return "Esta operación no es válida";
+		}
 	}
 	
 	@Override
@@ -211,7 +209,7 @@ public class Calculator extends VBox implements EventHandler<ActionEvent>{
         		displayText.setText(setValue(value));
         		break;
         	case "=":
-        		displayText.setText(Double.toString(doOperation(displayText.getText())));
+        		displayText.setText(doOperation(displayText.getText()));
         		number1 = ""; number2 = ""; operator = "";
         		break;
         	case "C":
